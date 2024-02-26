@@ -2,20 +2,26 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-02-26 13:56:49
+ * @LastEditTime: 2024-02-26 14:23:58
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: Mouth 页面
  */
 import { NavBar, DatePicker } from "antd-mobile";
 // import { useEffect, useState } from "react";
 import "./index.scss";
-// import classNames from "classnames";
+import { useState } from "react";
+import classNames from "classnames";
 // import dayjs from "dayjs";
 // import { useSelector } from "react-redux";
 // import { useMemo } from "react";
 // import _ from "lodash";
 // import DailyBill from "./components/DayBill";
 const Month = () => {
+  // 控制弹窗打开关闭
+  const [dataVisible, setDataVisible] = useState();
+  const onConfirm = () => {
+    setDataVisible(false);
+  };
   return (
     <div className="monthlyBill">
       <NavBar className="nav" backArrow={false}>
@@ -24,10 +30,12 @@ const Month = () => {
       <div className="content">
         <div className="header">
           {/* 时间切换区域 */}
-          <div className="date">
+          <div className="date" onClick={() => setDataVisible(true)}>
             <span className="text">2024 | 2月账单</span>
             {/* 思路：根据当前弹框打开的状态控制expand类名是否存在 */}
-            <span className="arrow expand"></span>
+            <span
+              className={classNames("arrow", dataVisible && "expand")}
+            ></span>
           </div>
           {/* 统计区域 */}
           <div className="twoLineOverview">
@@ -49,7 +57,10 @@ const Month = () => {
             className="kaDate"
             title="记账日期"
             precision="month"
-            visible={false}
+            visible={dataVisible}
+            onCancel={() => setDataVisible(false)}
+            onConfirm={onConfirm}
+            onClose={() => setDataVisible(false)}
             max={new Date()}
           />
         </div>
