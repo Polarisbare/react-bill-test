@@ -2,23 +2,31 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-02-26 16:49:32
+ * @LastEditTime: 2024-02-26 17:01:45
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: Mouth 页面
  */
 import { NavBar, DatePicker } from "antd-mobile";
-// import { useEffect, useState } from "react";
 import "./index.scss";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import classNames from "classnames";
 import dayjs from "dayjs";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // import { useMemo } from "react";
-// import _ from "lodash";
+import _ from "lodash";
 // import DailyBill from "./components/DayBill";
 const Month = () => {
+  // 按月份分组 从state中拿数据
+  const billList = useSelector((state) => state.bill.billList);
+  const mouthGroup = useMemo(() => {
+    // return 出去计算后的值
+    return _.groupBy(billList, (item) => dayjs(item.date).format("YYYY-MM"));
+  }, [billList]);
+  console.log("=========>mouthGroup", mouthGroup);
+
   // 控制弹窗打开关闭
   const [dataVisible, setDataVisible] = useState();
+  // 弹窗确认触发事件
   const onConfirm = (date) => {
     setDataVisible(false);
     const formatDate = dayjs(date).format("YYYY-MM");
