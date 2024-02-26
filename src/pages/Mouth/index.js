@@ -2,7 +2,7 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-02-26 14:23:58
+ * @LastEditTime: 2024-02-26 16:49:32
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: Mouth 页面
  */
@@ -11,7 +11,7 @@ import { NavBar, DatePicker } from "antd-mobile";
 import "./index.scss";
 import { useState } from "react";
 import classNames from "classnames";
-// import dayjs from "dayjs";
+import dayjs from "dayjs";
 // import { useSelector } from "react-redux";
 // import { useMemo } from "react";
 // import _ from "lodash";
@@ -19,9 +19,15 @@ import classNames from "classnames";
 const Month = () => {
   // 控制弹窗打开关闭
   const [dataVisible, setDataVisible] = useState();
-  const onConfirm = () => {
+  const onConfirm = (date) => {
     setDataVisible(false);
+    const formatDate = dayjs(date).format("YYYY-MM");
+    setCurrentDate(formatDate);
   };
+  // 控制时间显示
+  const [currentDate, setCurrentDate] = useState(() => {
+    return dayjs(new Date()).format("YYYY-MM");
+  });
   return (
     <div className="monthlyBill">
       <NavBar className="nav" backArrow={false}>
@@ -31,7 +37,7 @@ const Month = () => {
         <div className="header">
           {/* 时间切换区域 */}
           <div className="date" onClick={() => setDataVisible(true)}>
-            <span className="text">2024 | 2月账单</span>
+            <span className="text">{currentDate + ""} 月账单</span>
             {/* 思路：根据当前弹框打开的状态控制expand类名是否存在 */}
             <span
               className={classNames("arrow", dataVisible && "expand")}
