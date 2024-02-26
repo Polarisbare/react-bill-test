@@ -2,7 +2,7 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-02-26 17:01:45
+ * @LastEditTime: 2024-02-26 17:30:52
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: Mouth 页面
  */
@@ -12,7 +12,6 @@ import { useMemo, useState } from "react";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
-// import { useMemo } from "react";
 import _ from "lodash";
 // import DailyBill from "./components/DayBill";
 const Month = () => {
@@ -22,20 +21,38 @@ const Month = () => {
     // return 出去计算后的值
     return _.groupBy(billList, (item) => dayjs(item.date).format("YYYY-MM"));
   }, [billList]);
-  console.log("=========>mouthGroup", mouthGroup);
 
   // 控制弹窗打开关闭
-  const [dataVisible, setDataVisible] = useState();
-  // 弹窗确认触发事件
-  const onConfirm = (date) => {
-    setDataVisible(false);
-    const formatDate = dayjs(date).format("YYYY-MM");
-    setCurrentDate(formatDate);
-  };
+  const [dataVisible, setDataVisible] = useState(false);
   // 控制时间显示
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs(new Date()).format("YYYY-MM");
   });
+  const [currentMonthList, setMonthList] = useState([]);
+
+  const monthResult = useMemo(() => {
+    const pay = currentMonthList
+      .filter((item) => item.type === "pay")
+      .reduce((a, c) => a + c.money, 0);
+    const income = currentMonthList
+      .filter((item) => item.type === "income")
+      .reduce((a, c) => a + c.money, 0);
+    return {
+      pay,
+      income,
+      tatal: pay + income,
+    };
+  }, [currentMonthList]);
+  // 弹窗确认触发事件
+  const onConfirm = (date) => {
+    setDataVisible(false);
+    const formatDate = dayjs(date).format("YYYY-MM");
+    console.log("=========>formatDate", formatDate);
+
+    setMonthList(mouthGroup[formatDate] ?? []);
+    setCurrentDate(formatDate);
+  };
+
   return (
     <div className="monthlyBill">
       <NavBar className="nav" backArrow={false}>
@@ -54,15 +71,15 @@ const Month = () => {
           {/* 统计区域 */}
           <div className="twoLineOverview">
             <div className="item">
-              <span className="money">100</span>
+              <span className="money">{monthResult.pay.toFixed(2)}</span>
               <span className="type">支出</span>
             </div>
             <div className="item">
-              <span className="money">100</span>
+              <span className="money">{monthResult.income.toFixed(2)}</span>
               <span className="type">收入</span>
             </div>
             <div className="item">
-              <span className="money">100</span>
+              <span className="money">{monthResult.tatal.toFixed(2)}</span>
               <span className="type">结余</span>
             </div>
           </div>
