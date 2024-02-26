@@ -2,13 +2,13 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-02-26 17:30:52
+ * @LastEditTime: 2024-02-26 18:10:45
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: Mouth 页面
  */
 import { NavBar, DatePicker } from "antd-mobile";
 import "./index.scss";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
@@ -52,6 +52,11 @@ const Month = () => {
     setMonthList(mouthGroup[formatDate] ?? []);
     setCurrentDate(formatDate);
   };
+  // 初始化的时候把当前月的统计数据显示出来
+  useEffect(() => {
+    const nowDate = dayjs().format("YYY-MM");
+    setMonthList(mouthGroup[nowDate] ?? []);
+  }, [mouthGroup]);
 
   return (
     <div className="monthlyBill">
