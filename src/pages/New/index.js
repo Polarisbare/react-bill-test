@@ -2,7 +2,7 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-03-04 09:02:10
+ * @LastEditTime: 2024-03-04 09:10:32
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: New 页面
  */
@@ -12,9 +12,12 @@ import "./index.scss";
 import classNames from "classnames";
 import { billListData } from "@/contants";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const New = () => {
   const navigate = useNavigate();
+  // 控制支出状态
+  const [billType, setBillType] = useState("pay"); // pay 支出 income 收入
   return (
     <div className="keepAccounts">
       <NavBar className="nav" onBack={() => navigate(-1)}>
@@ -23,10 +26,18 @@ const New = () => {
 
       <div className="header">
         <div className="kaType">
-          <Button shape="rounded" className={classNames("selected")}>
+          <Button
+            shape="rounded"
+            className={classNames(billType === "pay" ? "selected" : "")}
+            onClick={() => setBillType("pay")}
+          >
             支出
           </Button>
-          <Button className={classNames("")} shape="rounded">
+          <Button
+            className={classNames(billType === "income" ? "selected" : "")}
+            shape="rounded"
+            onClick={() => setBillType("income")}
+          >
             收入
           </Button>
         </div>
@@ -51,7 +62,7 @@ const New = () => {
       </div>
 
       <div className="kaTypeList">
-        {billListData["pay"].map((item) => {
+        {billListData[billType].map((item) => {
           return (
             <div className="kaType" key={item.type}>
               <div className="title">{item.name}</div>
