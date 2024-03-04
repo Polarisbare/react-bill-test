@@ -2,7 +2,7 @@
  * @Author: Lv Jingxin lv510987@163.com
  * @Date: 2024-02-23 14:17:25
  * @LastEditors: Lv Jingxin lv510987@163.com
- * @LastEditTime: 2024-03-04 09:10:32
+ * @LastEditTime: 2024-03-04 09:29:01
  * @FilePath: /react-bill-test/src/pages/Layout/index.js
  * @Description: New 页面
  */
@@ -13,11 +13,31 @@ import classNames from "classnames";
 import { billListData } from "@/contants";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { addBillList } from "@/store/modules/billStore";
+import { useDispatch } from "react-redux";
 
 const New = () => {
   const navigate = useNavigate();
   // 控制支出状态
   const [billType, setBillType] = useState("pay"); // pay 支出 income 收入
+  // 收集金额
+  const [money, setMoney] = useState(0);
+  const moneyChange = (value) => {
+    setMoney(value);
+  };
+  // 收集账单类型
+  const [useFor, setUseFor] = useState();
+  const dispatch = useDispatch();
+  // 保存账单
+  const saveBill = () => {
+    const data = {
+      type: billType,
+      money: billType === "pay" ? -money : +money,
+      date: new Date(),
+      userFor: useFor,
+    };
+    dispatch(addBillList(data));
+  };
   return (
     <div className="keepAccounts">
       <NavBar className="nav" onBack={() => navigate(-1)}>
@@ -54,7 +74,13 @@ const New = () => {
               />
             </div>
             <div className="kaInput">
-              <Input className="input" placeholder="0.00" type="number" />
+              <Input
+                className="input"
+                placeholder="0.00"
+                type="number"
+                value={money}
+                onChange={moneyChange}
+              />
               <span className="iconYuan">¥</span>
             </div>
           </div>
@@ -69,7 +95,11 @@ const New = () => {
               <div className="list">
                 {item.list.map((item) => {
                   return (
-                    <div className={classNames("item", "")} key={item.type}>
+                    <div
+                      className={classNames("item", "")}
+                      key={item.type}
+                      onClick={() => setUseFor(item.type)}
+                    >
                       <div className="icon">
                         <Icon type={item.type} />
                       </div>
@@ -84,7 +114,9 @@ const New = () => {
       </div>
 
       <div className="btns">
-        <Button className="btn save">保 存</Button>
+        <Button className="btn save" onClick={saveBill}>
+          保 存
+        </Button>
       </div>
     </div>
   );
