@@ -90,6 +90,48 @@
       "money": -10,
       "date": "2024-03-04T01:30:20.708Z",
       "userFor": "food"
+    },
+    {
+      "id": "0c74",
+      "type": "pay",
+      "money": -20,
+      "date": "2023-12-31T16:00:00.000Z",
+      "userFor": "drinks"
+    },
+    {
+      "id": "487f",
+      "type": "pay",
+      "money": -20,
+      "date": "2023-12-31T16:00:00.000Z",
+      "userFor": "drinks"
+    },
+    {
+      "id": "49d1",
+      "type": "pay",
+      "money": -20,
+      "date": "2022-12-31T16:00:00.000Z",
+      "userFor": "drinks"
+    },
+    {
+      "id": "63ac",
+      "type": "pay",
+      "money": -20,
+      "date": "2024-03-03T16:00:00.000Z",
+      "userFor": "drinks"
+    },
+    {
+      "id": "ede2",
+      "type": "pay",
+      "money": -20,
+      "date": "2024-03-02T16:00:00.000Z",
+      "userFor": "drinks"
+    },
+    {
+      "id": "927e",
+      "type": "income",
+      "money": 200000,
+      "date": "2024-03-02T16:00:00.000Z",
+      "userFor": "salary"
     }
   ]
 }
